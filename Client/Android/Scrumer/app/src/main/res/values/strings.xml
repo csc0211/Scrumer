@@ -8,4 +8,8 @@
     <string name="main_txt_testing">Testing</string>
     <string name="main_txt_done">Done</string>
 
+    <!--login activity-->
+    <string name="login_hint_username">Username</string>
+    <string name="login_hint_password">Password</string>
+    <string name="login_txt_btnlogin">Login</string>
 </resources>

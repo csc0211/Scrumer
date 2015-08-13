@@ -11,35 +11,35 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="@dimen/headbar_height"
         android:orientation="horizontal"
-        android:paddingLeft="5dp"
-        android:paddingRight="5dp">
+        android:paddingLeft="@dimen/headbar_padding"
+        android:paddingRight="@dimen/headbar_padding">
 
         <RelativeLayout
             android:id="@+id/main_menu_toggle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
             android:layout_centerVertical="true">
 
             <ImageView
                 android:id="@+id/main_title_more"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_alignParentLeft="true"
+                android:layout_width="@dimen/main_more_vert_size"
+                android:layout_height="@dimen/main_more_vert_size"
+                android:layout_alignParentStart="true"
                 android:layout_centerVertical="true"
                 android:src="@drawable/ic_more_vert_white_24dp" />
 
             <com.tanyixiu.widgets.CircleImageView
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="@dimen/main_photo_size"
+                android:layout_height="@dimen/main_photo_size"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="-5dp"
-                android:layout_toRightOf="@id/main_title_more"
+                android:layout_marginStart="-5dp"
+                android:layout_toEndOf="@id/main_title_more"
                 android:src="@drawable/photo"
                 mimo:border_color="@color/bkg_color_white"
-                mimo:border_width="1dp" />
+                mimo:border_width="@dimen/circleimg_border_width" />
         </RelativeLayout>
 
         <TextView
@@ -50,15 +50,15 @@
             android:singleLine="true"
             android:text="@string/app_name"
             android:textColor="@android:color/white"
-            android:textSize="24sp" />
+            android:textSize="@dimen/headbar_text_size" />
     </RelativeLayout>
 
     <FrameLayout
         android:id="@+id/main_fragment"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
         android:layout_weight="1"
-        android:background="@color/bkg_color_white"></FrameLayout>
+        android:background="@color/bkg_color_white" />
 
     <LinearLayout
         android:layout_width="match_parent"

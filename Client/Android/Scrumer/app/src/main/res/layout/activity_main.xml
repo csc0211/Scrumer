@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:mimo="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/linearlayout_activity_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bkg_color_green_light"
+    android:clipToPadding="true"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp">
+
+        <RelativeLayout
+            android:id="@+id/main_menu_toggle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true">
+
+            <ImageView
+                android:id="@+id/main_title_more"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:src="@drawable/ic_more_vert_white_24dp" />
+
+            <com.tanyixiu.widgets.CircleImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="-5dp"
+                android:layout_toRightOf="@id/main_title_more"
+                android:src="@drawable/photo"
+                mimo:border_color="@color/bkg_color_white"
+                mimo:border_width="1dp" />
+        </RelativeLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:singleLine="true"
+            android:text="@string/app_name"
+            android:textColor="@android:color/white"
+            android:textSize="24sp" />
+    </RelativeLayout>
+
+    <FrameLayout
+        android:id="@+id/main_fragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:background="@color/bkg_color_white"></FrameLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/main_tab_home"
+            style="@style/style_main_tab"
+            android:drawableTop="@drawable/ic_home_white_24dp"
+            android:text="@string/main_txt_home" />
+
+        <TextView
+            android:id="@+id/main_tab_deving"
+            style="@style/style_main_tab"
+            android:drawableTop="@drawable/ic_place_white_24dp"
+            android:text="@string/main_txt_deving" />
+
+        <TextView
+            android:id="@+id/main_tab_totest"
+            style="@style/style_main_tab"
+            android:drawableTop="@drawable/ic_toys_white_24dp"
+            android:text="@string/main_txt_totest" />
+
+        <TextView
+            android:id="@+id/main_tab_testing"
+            style="@style/style_main_tab"
+            android:drawableTop="@drawable/ic_directions_run_white_24dp"
+            android:text="@string/main_txt_testing" />
+
+        <TextView
+            android:id="@+id/main_tab_done"
+            style="@style/style_main_tab"
+            android:drawableTop="@drawable/ic_track_changes_white_24dp"
+            android:text="@string/main_txt_done" />
+    </LinearLayout>
+
+</LinearLayout>

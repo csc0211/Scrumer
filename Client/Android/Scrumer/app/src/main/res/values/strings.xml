@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Scrumer</string>
+
+    <!--main activity-->
+    <string name="main_txt_home">Home</string>
+    <string name="main_txt_deving">Deving</string>
+    <string name="main_txt_totest">ToTest</string>
+    <string name="main_txt_testing">Testing</string>
+    <string name="main_txt_done">Done</string>
+
+</resources>

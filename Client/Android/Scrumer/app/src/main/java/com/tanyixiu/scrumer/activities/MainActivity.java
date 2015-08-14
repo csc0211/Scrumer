@@ -28,13 +28,13 @@ public class MainActivity extends BaseActivity {
 
     private void initView(View rootView) {
         mTabHolder = new TabHolder(rootView);
-        mTabHolder.setDefaultTabSelected();
         mTabHolder.setTabHolderOnClickListener(new TabHolderOnClickListener() {
             @Override
             public void onTabSelected(Fragment fragment) {
                 changeFragment(fragment);
             }
         });
+        mTabHolder.setDefaultTabSelected();
     }
 
     private void changeFragment(Fragment targetFragment) {

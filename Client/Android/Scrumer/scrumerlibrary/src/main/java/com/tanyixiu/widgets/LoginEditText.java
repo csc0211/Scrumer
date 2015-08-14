@@ -1,7 +1,6 @@
 package com.tanyixiu.widgets;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -10,8 +9,7 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
-
-import com.tanyixiu.scrumer.R;
+import com.tanyixiu.R;
 
 /**
  * Created by Mimo on 2015/8/13.
@@ -85,7 +83,7 @@ public class LoginEditText extends EditText {
         }
     };
 
-    private View.OnTouchListener mOnTouchListener = new View.OnTouchListener() {
+    private OnTouchListener mOnTouchListener = new OnTouchListener() {
         @Override
         public boolean onTouch(View v, MotionEvent event) {
             if (event.getAction() == MotionEvent.ACTION_UP) {

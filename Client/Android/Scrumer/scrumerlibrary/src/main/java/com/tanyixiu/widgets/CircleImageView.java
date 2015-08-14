@@ -19,8 +19,8 @@ import android.support.annotation.ColorRes;
 import android.support.annotation.DrawableRes;
 import android.util.AttributeSet;
 import android.widget.ImageView;
+import com.tanyixiu.R;
 
-import com.tanyixiu.scrumer.R;
 
 /**
  * Created by Mimo on 2015/8/13.

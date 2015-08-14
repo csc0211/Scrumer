@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Scrumer.iml" filepath="$PROJECT_DIR$/Scrumer.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/scrumerlibrary/scrumerlibrary.iml" filepath="$PROJECT_DIR$/scrumerlibrary/scrumerlibrary.iml" />
     </modules>
   </component>
 </project>

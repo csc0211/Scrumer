@@ -1,8 +1,33 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fab="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.tanyixiu.scrumer.fragments.HomeFragment">
 
+    <com.yalantis.phoenix.PullToRefreshView
+        android:id="@+id/home_pulltorefresh"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ListView
+            android:id="@+id/list_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:divider="@null"
+            android:dividerHeight="0dp"
+            android:fadingEdge="none" />
+    </com.yalantis.phoenix.PullToRefreshView>
+
+    <com.melnykov.fab.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|right"
+        android:layout_margin="@dimen/activity_horizontal_margin"
+        android:src="@drawable/ic_add_white_24dp"
+        fab:fab_colorNormal="@color/bkg_color_ripple_accent"
+        fab:fab_colorPressed="@color/bkg_color_ripple_accent_pressed"
+        fab:fab_colorRipple="@color/bkg_color_ripple_accent" />
 
 </FrameLayout>

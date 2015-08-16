@@ -26,6 +26,11 @@ public class MainActivity extends BaseActivity {
         initView(rootView);
     }
 
+    @Override
+    public void onBackPressed() {
+        this.finish();
+    }
+
     private void initView(View rootView) {
         mTabHolder = new TabHolder(rootView);
         mTabHolder.setTabHolderOnClickListener(new TabHolderOnClickListener() {
@@ -41,6 +46,7 @@ public class MainActivity extends BaseActivity {
         getFragmentManager()
                 .beginTransaction()
                 .replace(R.id.main_fragment,targetFragment)
+                .addToBackStack(null)
                 .setTransitionStyle(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                 .commit();
     }

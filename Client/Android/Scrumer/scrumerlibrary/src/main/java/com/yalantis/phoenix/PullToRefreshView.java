@@ -17,44 +17,50 @@ import android.view.animation.Transformation;
 import android.widget.AbsListView;
 import android.widget.ImageView;
 
+import com.tanyixiu.R;
 import com.yalantis.phoenix.refresh_view.BaseRefreshView;
 import com.yalantis.phoenix.refresh_view.SunRefreshView;
 import com.yalantis.phoenix.refresh_view.Utils;
-import com.tanyixiu.R;
+
 import java.security.InvalidParameterException;
+
+import fr.castorflex.android.circularprogressbar.CircularProgressBar;
 
 public class PullToRefreshView extends ViewGroup {
 
-    private static final int DRAG_MAX_DISTANCE = 120;
-    private static final float DRAG_RATE = .5f;
-    private static final float DECELERATE_INTERPOLATION_FACTOR = 2f;
+    private static final int    STYLE_SUN                       = 0;
+    private static final int    MAX_OFFSET_ANIMATION_DURATION   = 700;
+    private static final int    DRAG_MAX_DISTANCE               = 120;
+    private static final int    INVALID_POINTER                 = -1;
+    private static final int    LOADMORE_WIDTH_DP               = 36;
+    private static final float  DRAG_RATE                       = .5f;
+    private static final float  DECELERATE_INTERPOLATION_FACTOR = 2f;
 
-    public static final int STYLE_SUN = 0;
-    public static final int MAX_OFFSET_ANIMATION_DURATION = 700;
+    private View                mTarget;
+    private ImageView           mRefreshView;
+    private BaseRefreshView     mBaseRefreshView;
+    private Interpolator        mDecelerateInterpolator;
+    private OnRefreshListener   mListener;
 
-    private static final int INVALID_POINTER = -1;
+    private int                 mFrom;
+    private int                 mTouchSlop;
+    private int                 mActivePointerId;
+    private int                 mCurrentOffsetTop;
+    private int                 mTotalDragDistance;
+    private int                 mLoadMoreWidthPx;
 
-    private View mTarget;
-    private ImageView mRefreshView;
-    private Interpolator mDecelerateInterpolator;
-    private int mTouchSlop;
-    private int mTotalDragDistance;
-    private BaseRefreshView mBaseRefreshView;
-    private float mCurrentDragPercent;
-    private int mCurrentOffsetTop;
-    private boolean mRefreshing;
-    private int mActivePointerId;
-    private boolean mIsBeingDragged;
-    private float mInitialMotionY;
-    private int mFrom;
-    private float mFromDragPercent;
-    private boolean mNotify;
-    private OnRefreshListener mListener;
+    private int                 mTargetPaddingTop;
+    private int                 mTargetPaddingBottom;
+    private int                 mTargetPaddingRight;
+    private int                 mTargetPaddingLeft;
 
-    private int mTargetPaddingTop;
-    private int mTargetPaddingBottom;
-    private int mTargetPaddingRight;
-    private int mTargetPaddingLeft;
+    private float               mInitialMotionY;
+    private float               mFromDragPercent;
+    private float               mCurrentDragPercent;
+
+    private boolean             mNotify;
+    private boolean             mRefreshing;
+    private boolean             mIsBeingDragged;
 
     public PullToRefreshView(Context context) {
         this(context, null);
@@ -67,11 +73,12 @@ public class PullToRefreshView extends ViewGroup {
         a.recycle();
 
         mDecelerateInterpolator = new DecelerateInterpolator(DECELERATE_INTERPOLATION_FACTOR);
-        mTouchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
+        mTouchSlop = ViewConfiguration.get(context).getScaledTouchSlop();//手的滑动距离大于这个数字才能开始移动
+
         mTotalDragDistance = Utils.convertDpToPixel(context, DRAG_MAX_DISTANCE);
+        mLoadMoreWidthPx = Utils.convertDpToPixel(context, LOADMORE_WIDTH_DP);
 
         mRefreshView = new ImageView(context);
-
         setRefreshStyle(type);
 
         addView(mRefreshView);
@@ -117,19 +124,49 @@ public class PullToRefreshView extends ViewGroup {
         mRefreshView.measure(widthMeasureSpec, heightMeasureSpec);
     }
 
+    @Override
+    protected void onLayout(boolean changed, int l, int t, int r, int b) {
+
+        ensureTarget();
+        if (mTarget == null){
+            return;
+        }
+
+        int height        = getMeasuredHeight();
+        int width         = getMeasuredWidth();
+        int paddingLeft   = getPaddingLeft();
+        int paddingTop    = getPaddingTop();
+        int paddingRight  = getPaddingRight();
+        int paddingBottom = getPaddingBottom();
+
+        mTarget.layout(      paddingLeft,
+                             paddingTop + mCurrentOffsetTop,
+                             paddingLeft + width - paddingRight,
+                             paddingTop + height - paddingBottom + mCurrentOffsetTop);
+
+        mRefreshView.layout( paddingLeft,
+                             paddingTop,
+                             paddingLeft + width - paddingRight,
+                             paddingTop + height - paddingBottom);
+    }
+
     private void ensureTarget() {
         if (mTarget != null)
             return;
-        if (getChildCount() > 0) {
-            for (int i = 0; i < getChildCount(); i++) {
-                View child = getChildAt(i);
-                if (child != mRefreshView) {
-                    mTarget = child;
-                    mTargetPaddingBottom = mTarget.getPaddingBottom();
-                    mTargetPaddingLeft = mTarget.getPaddingLeft();
-                    mTargetPaddingRight = mTarget.getPaddingRight();
-                    mTargetPaddingTop = mTarget.getPaddingTop();
-                }
+        int childCount = getChildCount();
+
+        if (childCount <= 0) {
+            return;
+        }
+
+        for (int i = 0; i < childCount; i++) {
+            View child = getChildAt(i);
+            if (child != mRefreshView) {
+                mTarget              = child;
+                mTargetPaddingLeft   = mTarget.getPaddingLeft();
+                mTargetPaddingTop    = mTarget.getPaddingTop();
+                mTargetPaddingRight  = mTarget.getPaddingRight();
+                mTargetPaddingBottom = mTarget.getPaddingBottom();
             }
         }
     }
@@ -146,7 +183,7 @@ public class PullToRefreshView extends ViewGroup {
         switch (action) {
             case MotionEvent.ACTION_DOWN:
                 setTargetOffsetTop(0, true);
-                mActivePointerId = MotionEventCompat.getPointerId(ev, 0);
+                mActivePointerId = MotionEventCompat.getPointerId(ev, 0);//触摸点id
                 mIsBeingDragged = false;
                 final float initialMotionY = getMotionEventY(ev, mActivePointerId);
                 if (initialMotionY == -1) {
@@ -372,7 +409,7 @@ public class PullToRefreshView extends ViewGroup {
     }
 
     private void setTargetOffsetTop(int offset, boolean requiresUpdate) {
-        mTarget.offsetTopAndBottom(offset);
+        mTarget.offsetTopAndBottom(offset);//设置上下移动距离
         mBaseRefreshView.offsetTopAndBottom(offset);
         mCurrentOffsetTop = mTarget.getTop();
         if (requiresUpdate && android.os.Build.VERSION.SDK_INT < 11) {
@@ -395,30 +432,12 @@ public class PullToRefreshView extends ViewGroup {
         }
     }
 
-    @Override
-    protected void onLayout(boolean changed, int l, int t, int r, int b) {
-
-        ensureTarget();
-        if (mTarget == null)
-            return;
-
-        int height = getMeasuredHeight();
-        int width = getMeasuredWidth();
-        int left = getPaddingLeft();
-        int top = getPaddingTop();
-        int right = getPaddingRight();
-        int bottom = getPaddingBottom();
-
-        mTarget.layout(left, top + mCurrentOffsetTop, left + width - right, top + height - bottom + mCurrentOffsetTop);
-        mRefreshView.layout(left, top, left + width - right, top + height - bottom);
-    }
-
     public void setOnRefreshListener(OnRefreshListener listener) {
         mListener = listener;
     }
 
-    public static interface OnRefreshListener {
-        public void onRefresh();
+    public interface OnRefreshListener {
+        void onRefresh();
     }
 
 }

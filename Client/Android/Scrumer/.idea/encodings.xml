@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="Encoding">
+  <component name="Encoding" defaultCharsetForPropertiesFiles="UTF-8">
     <file url="file://$PROJECT_DIR$/app/src/main/res/drawable-hdpi/ic_add_white_24dp.png" charset="GBK" />
     <file url="file://$PROJECT_DIR$/app/src/main/res/drawable-mdpi/ic_add_white_24dp.png" charset="GBK" />
     <file url="file://$PROJECT_DIR$/app/src/main/res/drawable-xhdpi/ic_add_white_24dp.png" charset="GBK" />
@@ -12,6 +12,9 @@
     <file url="file://$PROJECT_DIR$/scrumerlibrary/src/main/java/com/melnykov/fab/RecyclerViewScrollDetector.java" charset="GBK" />
     <file url="file://$PROJECT_DIR$/scrumerlibrary/src/main/java/com/melnykov/fab/ScrollDirectionListener.java" charset="GBK" />
     <file url="file://$PROJECT_DIR$/scrumerlibrary/src/main/java/com/melnykov/fab/ScrollViewScrollDetector.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/scrumerlibrary/src/main/java/fr/castorflex/android/circularprogressbar/CircularProgressBar.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/scrumerlibrary/src/main/java/fr/castorflex/android/circularprogressbar/CircularProgressBarUtils.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/scrumerlibrary/src/main/java/fr/castorflex/android/circularprogressbar/CircularProgressDrawable.java" charset="GBK" />
     <file url="file://$PROJECT_DIR$/scrumerlibrary/src/main/res/anim-v21" charset="GBK" />
     <file url="file://$PROJECT_DIR$/scrumerlibrary/src/main/res/drawable-hdpi" charset="GBK" />
     <file url="file://$PROJECT_DIR$/scrumerlibrary/src/main/res/drawable-mdpi" charset="GBK" />

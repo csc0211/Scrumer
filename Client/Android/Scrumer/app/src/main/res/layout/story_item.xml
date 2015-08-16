@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:mimo="http://schemas.android.com/apk/res-auto"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:gravity="center_vertical"
+              android:orientation="horizontal"
+              android:padding="@dimen/activity_horizontal_margin">
+
+    <LinearLayout
+        android:layout_width="56dp"
+        android:layout_height="48dp"
+        android:orientation="horizontal">
+
+        <com.tanyixiu.widgets.CircleImageView
+            android:id="@+id/storyitem_img_priority"
+            android:layout_width="12dp"
+            android:layout_height="12dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="4dp"
+            mimo:border_color="@color/bkg_color_white"
+            mimo:border_width="@dimen/circleimg_border_width"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/storyitem_tv_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:text="Single-line item"
+            android:textColor="#212121"
+            android:textSize="@dimen/fontsize_subhead"/>
+
+        <TextView
+            android:id="@+id/storyitem_tv_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:lines="2"
+            android:text="Add 8dp padding at the top and bottom of a list. One exception is at the top of a list with a subheader, because subheaders contain their own padding."
+            android:textColor="#757575"
+            android:textSize="@dimen/fontsize_body2"/>
+    </LinearLayout>
+
+</LinearLayout>

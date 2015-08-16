@@ -4,4 +4,20 @@
     android:layout_height="match_parent"
     tools:context="com.tanyixiu.scrumer.fragments.DevingFragment">
 
+    <com.yalantis.phoenix.PullToRefreshView
+        android:id="@+id/deving_pulltorefresh"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ListView
+            android:id="@+id/deving_listview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:divider="@null"
+            android:dividerHeight="0dp"
+            android:fadingEdge="none"
+            android:scrollbars="none" />
+    </com.yalantis.phoenix.PullToRefreshView>
+
+
 </FrameLayout>

@@ -14,52 +14,143 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="224dp"
-            android:orientation="horizontal"
+            android:layout_height="168dp"
             android:padding="@dimen/activity_horizontal_margin">
 
             <ImageView
-                android:layout_width="@dimen/main_more_vert_size"
-                android:layout_height="@dimen/main_more_vert_size"
-                android:layout_alignParentStart="true"
-                android:onClick="onBackCliked"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
                 android:src="@drawable/ic_keyboard_backspace_white_24dp"/>
 
             <ImageView
-                android:layout_width="@dimen/main_more_vert_size"
-                android:layout_height="@dimen/main_more_vert_size"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:src="@drawable/ic_more_vert_white_24dp"/>
 
-
             <TextView
+                android:id="@+id/storydetail_tv_name"
                 android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:layout_alignParentBottom="true"
-                android:ellipsize="end"
-                android:gravity="center_vertical"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
                 android:paddingLeft="56dp"
-                android:singleLine="true"
-                android:text="Network Request"
+                android:text="Language categorization"
                 android:textColor="@color/txt_color_white"
                 android:textSize="@dimen/fontsize_title"/>
         </RelativeLayout>
 
-        <LinearLayout
+        <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/bkg_color_white"
-            android:orientation="vertical"
-            android:padding="@dimen/activity_horizontal_margin">
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:scrollbars="none">
 
-            <TextView
+            <LinearLayout
+                android:id="@+id/storydetail_ll_detail"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingLeft="56dp"
-                android:paddingTop="30dp"
-                android:text="Add network request when the listview is refresing or loading more."
-                android:textSize="@dimen/fontsize_subhead"/>
-        </LinearLayout>
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:paddingBottom="10dp"
+                android:paddingTop="10dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingBottom="8dp"
+                    android:paddingTop="8dp">
+
+                    <TextView
+                        android:layout_width="56dp"
+                        android:layout_height="wrap_content"
+                        android:singleLine="true"
+                        android:text="State:"/>
+
+                    <TextView
+                        android:id="@+id/storydetail_tv_state"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingBottom="8dp"
+                    android:paddingTop="8dp">
+
+                    <TextView
+                        android:layout_width="56dp"
+                        android:layout_height="wrap_content"
+                        android:singleLine="true"
+                        android:text="Priority:"/>
+
+                    <TextView
+                        android:id="@+id/storydetail_tv_priority"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingBottom="8dp"
+                    android:paddingTop="8dp">
+
+                    <TextView
+                        android:layout_width="56dp"
+                        android:layout_height="wrap_content"
+                        android:singleLine="true"
+                        android:text="Devper:"/>
+
+                    <TextView
+                        android:id="@+id/storydetail_tv_developer"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingBottom="8dp"
+                    android:paddingTop="8dp">
+
+                    <TextView
+                        android:layout_width="56dp"
+                        android:layout_height="wrap_content"
+                        android:singleLine="true"
+                        android:text="Tester:"/>
+
+                    <TextView
+                        android:id="@+id/storydetail_tv_tester"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingBottom="8dp"
+                    android:paddingTop="8dp">
+
+                    <TextView
+                        android:layout_width="56dp"
+                        android:layout_height="wrap_content"
+                        android:singleLine="true"
+                        android:text="Detail:"/>
+
+                    <TextView
+                        android:id="@+id/storydetail_tv_description"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+                </LinearLayout>
+            </LinearLayout>
+        </ScrollView>
     </LinearLayout>
 
     <com.melnykov.fab.FloatingActionButton
@@ -67,13 +158,17 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="right"
-        android:layout_marginLeft="@dimen/activity_horizontal_margin"
         android:layout_marginRight="@dimen/activity_horizontal_margin"
-        android:layout_marginTop="196dp"
-        android:onClick="doEditClick"
+        android:layout_marginTop="138dp"
         android:src="@drawable/ic_mode_edit_white_24dp"
         scrumer:fab_colorNormal="@color/bkg_color_ripple_accent"
         scrumer:fab_colorPressed="@color/bkg_color_ripple_accent_pressed"
         scrumer:fab_colorRipple="@color/bkg_color_ripple_accent"/>
 
+    <fr.castorflex.android.circularprogressbar.CircularProgressBar
+        android:id="@+id/storydetail_cpb"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_gravity="center"
+        scrumer:cpb_colors="@array/gplus_colors"/>
 </FrameLayout>

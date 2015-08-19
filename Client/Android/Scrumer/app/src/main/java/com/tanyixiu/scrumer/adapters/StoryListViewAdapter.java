@@ -54,7 +54,7 @@ public class StoryListViewAdapter extends BaseAdapter {
     }
 
     @Override
-    public Object getItem(int position) {
+    public Story getItem(int position) {
         if (null == mStories || 0 == mStories.size()) {
             return null;
         }
@@ -68,53 +68,15 @@ public class StoryListViewAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-
-        Story story = (Story) getItem(position);
-        if (story.isParent()) {
-            return getParentStoryView(story, convertView);
-        }
-        return getUserStoryView(story, convertView);
-    }
-
-
-    private View getParentStoryView(Story story, View convertView) {
-        int resId = R.layout.story_group_item;
-        ParentStoryViewHolder holder;
-        if (null == convertView) {
-            convertView = LayoutInflater.from(mContext).inflate(resId, null);
-            holder = new ParentStoryViewHolder(convertView);
-            convertView.setTag(holder);
-        } else {
-            int id = convertView.getId();
-            if (id != resId) {
-                convertView = LayoutInflater.from(mContext).inflate(resId, null);
-                holder = new ParentStoryViewHolder(convertView);
-                convertView.setTag(holder);
-            } else {
-                holder = (ParentStoryViewHolder) convertView.getTag();
-            }
-        }
-        holder.bindData(story);
-        return convertView;
-    }
-
-    private View getUserStoryView(Story story, View convertView) {
-        int resId = R.layout.story_item;
         UserStoryViewHolder holder;
         if (null == convertView) {
-            convertView = LayoutInflater.from(mContext).inflate(resId, null);
+            convertView = LayoutInflater.from(mContext).inflate(R.layout.story_item, null);
             holder = new UserStoryViewHolder(convertView);
             convertView.setTag(holder);
         } else {
-            int id = convertView.getId();
-            if (id != resId) {
-                convertView = LayoutInflater.from(mContext).inflate(resId, null);
-                holder = new UserStoryViewHolder(convertView);
-                convertView.setTag(holder);
-            } else {
-                holder = (UserStoryViewHolder) convertView.getTag();
-            }
+            holder = (UserStoryViewHolder) convertView.getTag();
         }
+        Story story = getItem(position);
         holder.bindData(story);
         return convertView;
     }
@@ -131,18 +93,6 @@ public class StoryListViewAdapter extends BaseAdapter {
             }, 2000);
         }
     };
-
-    class ParentStoryViewHolder {
-        private TextView tvName;
-
-        public ParentStoryViewHolder(View convertView) {
-            tvName = (TextView) convertView.findViewById(R.id.storygroup_tv_name);
-        }
-
-        public void bindData(Story parentStory) {
-            tvName.setText(parentStory.getName());
-        }
-    }
 
     class UserStoryViewHolder {
         private TextView tvName;

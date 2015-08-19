@@ -1,0 +1,28 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:scrumer="http://schemas.android.com/apk/res-auto"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent">
+
+    <com.yalantis.phoenix.PullToRefreshView
+        android:id="@+id/storylist_pulltorefresh"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ListView
+            android:id="@+id/storylist_listview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:divider="@null"
+            android:dividerHeight="0dp"
+            android:fadingEdge="none"
+            android:scrollbars="none"/>
+    </com.yalantis.phoenix.PullToRefreshView>
+
+    <fr.castorflex.android.circularprogressbar.CircularProgressBar
+        android:id="@+id/storylist_cpb"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_gravity="center"
+        scrumer:cpb_colors="@array/gplus_colors"/>
+
+</FrameLayout>

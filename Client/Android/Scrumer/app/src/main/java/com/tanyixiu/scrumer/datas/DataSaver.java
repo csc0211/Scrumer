@@ -1,6 +1,7 @@
 package com.tanyixiu.scrumer.datas;
 
 
+import android.os.Message;
 import android.text.TextUtils;
 
 import com.activeandroid.query.Select;
@@ -11,6 +12,9 @@ import com.tanyixiu.scrumer.http.VolleyHelper.RequestListener;
 import com.tanyixiu.scrumer.models.User;
 import com.tanyixiu.scrumer.utils.CommonUtils;
 import com.tanyixiu.scrumer.utils.JsonHelper;
+
+import java.util.logging.Handler;
+import java.util.logging.LogRecord;
 
 /**
  * Created by Mimo on 2015/8/20.
@@ -98,4 +102,14 @@ public class DataSaver {
 //            loginSuccess(user);
         }
     };
+
+    public static void test() {
+        android.os.Handler handler = new android.os.Handler() {
+            @Override
+            public void handleMessage(Message msg) {
+                super.handleMessage(msg);
+            }
+        };
+
+    }
 }

@@ -11,6 +11,9 @@ import com.tanyixiu.scrumer.R;
 import com.tanyixiu.scrumer.datas.DataSaver;
 import com.tanyixiu.scrumer.utils.CommonUtils;
 import com.tanyixiu.scrumer.utils.StringHelper;
+import com.tanyixiu.widgets.CircularProgressDialog;
+
+import fr.castorflex.android.circularprogressbar.CircularProgressBar;
 
 public class LoginActivity extends BaseActivity {
 
@@ -59,28 +62,22 @@ public class LoginActivity extends BaseActivity {
         RegisterActivity.startActivity(LoginActivity.this);
     }
 
-    private void toggleEnable(boolean isLoading) {
-        this.edUsername.setEnabled(!isLoading);
-        this.edPassword.setEnabled(!isLoading);
-        this.btnOk.setEnabled(!isLoading);
-    }
-
     private void requestLogin(String name, String password) {
-        toggleEnable(true);
+        final CircularProgressDialog bar = CircularProgressDialog.show(LoginActivity.this);
 
         String md5Pwd = StringHelper.toMD5(password);
         DataSaver.getLoginUser(name, md5Pwd, new DataSaver.CallBackListener() {
             @Override
             public void onSuccess(String result) {
-                toggleEnable(false);
+                bar.dismiss();
                 ProjectActivity.startActivity(LoginActivity.this, "1");
                 finish();
             }
 
             @Override
             public void onFailure(Exception ex) {
-                toggleEnable(false);
                 CommonUtils.showToast(ex.getMessage());
+                bar.dismiss();
             }
         });
 

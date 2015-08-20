@@ -3,9 +3,10 @@ package com.tanyixiu.scrumer;
 import android.app.Application;
 import android.content.Context;
 
+import com.activeandroid.ActiveAndroid;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
-import com.tanyixiu.scrumer.entities.User;
+import com.tanyixiu.scrumer.models.User;
 
 /**
  * Created by Mimo on 2015/8/17.
@@ -20,6 +21,7 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
         sContext = getApplicationContext();
+        ActiveAndroid.initialize(sContext);
         sRequestQueue = Volley.newRequestQueue(sContext);
     }
 

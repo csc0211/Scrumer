@@ -12,6 +12,7 @@
     <string name="login_hint_username">用户名</string>
     <string name="login_hint_password">密码</string>
     <string name="login_txt_btnlogin">登录</string>
+    <string name="login_txt_btnregister">注册</string>
     <string name="login_toast_emptyname">用户名不能为空</string>
     <string name="login_toast_emptypassword">密码不能为空</string>
     <string name="login_toast_login_error">用户名或密码不正确</string>
@@ -30,4 +31,5 @@
     <string name="title_activity_project_edit">ProjectEditActivity</string>
     <string name="title_activity_story">StoryActivity</string>
     <string name="title_activity_team">TeamActivity</string>
+    <string name="title_activity_register">RegisterActivity</string>
 </resources>

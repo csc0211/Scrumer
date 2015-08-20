@@ -3,14 +3,7 @@ package com.tanyixiu.scrumer.utils;
 import android.text.TextUtils;
 
 import com.alibaba.fastjson.JSON;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-import com.tanyixiu.scrumer.TestData;
-import com.tanyixiu.scrumer.entities.Project;
 import com.tanyixiu.scrumer.entities.StoryDetail_X;
-import com.tanyixiu.scrumer.entities.User;
-
-import org.json.JSONArray;
 
 import java.util.List;
 

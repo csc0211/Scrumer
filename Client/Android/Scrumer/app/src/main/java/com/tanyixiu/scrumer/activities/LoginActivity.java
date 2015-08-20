@@ -2,46 +2,42 @@ package com.tanyixiu.scrumer.activities;
 
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.android.volley.VolleyError;
-import com.tanyixiu.scrumer.App;
 import com.tanyixiu.scrumer.R;
-import com.tanyixiu.scrumer.entities.Project;
-import com.tanyixiu.scrumer.entities.User;
-import com.tanyixiu.scrumer.http.HttpHelper;
-import com.tanyixiu.scrumer.http.SqlHelper;
-import com.tanyixiu.scrumer.http.VolleyHelper;
-import com.tanyixiu.scrumer.http.VolleyHelper.RequestListener;
+import com.tanyixiu.scrumer.datas.DataSaver;
 import com.tanyixiu.scrumer.utils.CommonUtils;
-import com.tanyixiu.scrumer.utils.JsonHelper;
-
-import java.security.MessageDigest;
+import com.tanyixiu.scrumer.utils.StringHelper;
 
 public class LoginActivity extends BaseActivity {
 
     private Button btnOk;
+    private Button btnRegister;
     private EditText edUsername;
     private EditText edPassword;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
-        initView();
+        View rootView = LayoutInflater.from(this).inflate(R.layout.activity_login, null);
+        setContentView(rootView);
+        initView(rootView);
         initViewEvent();
     }
 
-    private void initView() {
-        this.btnOk = (Button) findViewById(R.id.login_btn_ok);
-        this.edUsername = (EditText) findViewById(R.id.login_ed_username);
-        this.edPassword = (EditText) findViewById(R.id.login_ed_password);
+    private void initView(View rootView) {
+        this.btnOk = (Button) rootView.findViewById(R.id.login_btn_ok);
+        this.btnRegister = (Button) rootView.findViewById(R.id.login_btn_register);
+        this.edUsername = (EditText) rootView.findViewById(R.id.login_ed_username);
+        this.edPassword = (EditText) rootView.findViewById(R.id.login_ed_password);
     }
 
     private void initViewEvent() {
         this.btnOk.setOnClickListener(mOnClickListener);
+        this.btnRegister.setOnClickListener(mOnClickListener);
     }
 
     private void btnLoginClick() {
@@ -59,6 +55,10 @@ public class LoginActivity extends BaseActivity {
         requestLogin(name, password);
     }
 
+    private void btnRegisterClick() {
+        RegisterActivity.startActivity(LoginActivity.this);
+    }
+
     private void toggleEnable(boolean isLoading) {
         this.edUsername.setEnabled(!isLoading);
         this.edPassword.setEnabled(!isLoading);
@@ -67,14 +67,23 @@ public class LoginActivity extends BaseActivity {
 
     private void requestLogin(String name, String password) {
         toggleEnable(true);
-        String sql = SqlHelper.getLoginUser(name, password);
-        VolleyHelper.requestString(sql, mRequestListener);
-    }
 
-    private void loginSuccess(User user) {
-        App.setLoginUser(user);
-        ProjectActivity.startActivity(LoginActivity.this, "1");
-        finish();
+        String md5Pwd = StringHelper.toMD5(password);
+        DataSaver.getLoginUser(name, md5Pwd, new DataSaver.CallBackListener() {
+            @Override
+            public void onSuccess(String result) {
+                toggleEnable(false);
+                ProjectActivity.startActivity(LoginActivity.this, "1");
+                finish();
+            }
+
+            @Override
+            public void onFailure(Exception ex) {
+                toggleEnable(false);
+                CommonUtils.showToast(ex.getMessage());
+            }
+        });
+
     }
 
     private View.OnClickListener mOnClickListener = new View.OnClickListener() {
@@ -84,41 +93,12 @@ public class LoginActivity extends BaseActivity {
                 case R.id.login_btn_ok:
                     btnLoginClick();
                     break;
+                case R.id.login_btn_register:
+                    btnRegisterClick();
+                    break;
                 default:
                     break;
             }
-        }
-    };
-
-    private RequestListener<String> mRequestListener = new RequestListener<String>() {
-        @Override
-        public void onErrorResponse(VolleyError volleyError) {
-            toggleEnable(false);
-            volleyError.printStackTrace();
-            String errorMessage = volleyError.getMessage();
-            if (!TextUtils.isEmpty(errorMessage)) {
-                CommonUtils.showToast(errorMessage);
-            } else {
-                CommonUtils.showToast(R.string.login_toast_request_error);
-            }
-        }
-
-        @Override
-        public void onResponse(String response) {
-            toggleEnable(false);
-            User user = null;
-            try {
-                user = JsonHelper.toEntity(response, User.class);
-            } catch (Exception e) {
-                e.printStackTrace();
-                CommonUtils.showToast(e.getMessage());
-                return;
-            }
-            if (null == user) {
-                CommonUtils.showToast(R.string.login_toast_login_error);
-                return;
-            }
-            loginSuccess(user);
         }
     };
 }

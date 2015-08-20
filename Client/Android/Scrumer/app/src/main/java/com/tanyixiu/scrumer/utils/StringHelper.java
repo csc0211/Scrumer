@@ -1,8 +1,9 @@
 package com.tanyixiu.scrumer.utils;
 
-import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * Created by Mimo on 2015/8/18.
@@ -30,6 +31,12 @@ public class StringHelper {
             resultCharArray[index++] = hexDigits[b & 0xf];
         }
         return new String(resultCharArray);
+    }
+
+    public static String getCurrentTime() {
+        long time = System.currentTimeMillis();
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        return format.format(new Date(time));
     }
 
 }

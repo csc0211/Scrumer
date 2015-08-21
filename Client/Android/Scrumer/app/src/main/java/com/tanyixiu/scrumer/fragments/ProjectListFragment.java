@@ -84,7 +84,7 @@ public class ProjectListFragment extends Fragment {
     private void requestData() {
         toggleLoading(true);
         String sql = SqlHelper.getProjects(((ProjectActivity) getActivity()).getTeamId());
-        VolleyHelper.requestString(sql, new VolleyHelper.RequestListener<String>() {
+        VolleyHelper.requestServer(sql, new VolleyHelper.RequestListener<String>() {
             @Override
             public void onResponse(String s) {
                 toggleLoading(false);

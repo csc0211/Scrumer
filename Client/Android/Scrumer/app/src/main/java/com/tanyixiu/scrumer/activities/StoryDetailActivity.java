@@ -84,14 +84,14 @@ public class StoryDetailActivity extends BaseActivity {
 
         try {
             String sql_state = SqlHelper.getStoryState(mStory.getStateId());
-            VolleyHelper.requestString(sql_state, new VolleyHelper.RequestListener<String>() {
+            VolleyHelper.requestServer(sql_state, new VolleyHelper.RequestListener<String>() {
                 @Override
                 public void onResponse(String s) {
                     State state = JsonHelper.toEntity(s, State.class);
                     storyDetail_x.setState(state);
 
                     String sql_user = SqlHelper.getStoryUser(mStory.getId());
-                    VolleyHelper.requestString(sql_user, new VolleyHelper.RequestListener<String>() {
+                    VolleyHelper.requestServer(sql_user, new VolleyHelper.RequestListener<String>() {
                         @Override
                         public void onResponse(String s) {
                             toggleLoading(false);

@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest
-    package="com.tanyixiu.scrumer"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest package="com.tanyixiu.scrumer"
+          xmlns:android="http://schemas.android.com/apk/res/android">
 
     <uses-permission android:name="android.permission.INTERNET"/>
 
@@ -49,6 +48,10 @@
             android:name=".activities.RegisterActivity"
             android:label="@string/title_activity_register"
             android:windowSoftInputMode="adjustResize|stateHidden">
+        </activity>
+        <activity
+            android:name=".activities.TeamEditActivity"
+            android:label="@string/title_activity_team_edit">
         </activity>
     </application>
 

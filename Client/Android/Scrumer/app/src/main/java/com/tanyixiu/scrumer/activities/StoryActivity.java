@@ -77,7 +77,7 @@ public class StoryActivity extends BaseActivity {
 
     private void requestData() {
         String sql = SqlHelper.getProjectState(mProject.getSectionId());
-        VolleyHelper.requestString(sql, new VolleyHelper.RequestListener<String>() {
+        VolleyHelper.requestServer(sql, new VolleyHelper.RequestListener<String>() {
             @Override
             public void onResponse(String s) {
                 try {

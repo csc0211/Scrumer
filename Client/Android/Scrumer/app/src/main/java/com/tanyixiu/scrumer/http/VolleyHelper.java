@@ -20,7 +20,7 @@ public class VolleyHelper {
 
     }
 
-    public static void requestString(String param, RequestListener listener) {
+    public static void requestServer(String param, RequestListener listener) {
         try {
             param = URLEncoder.encode(param, "UTF-8");
             String url = String.format(SERVER_ADDRESS, param);

@@ -10,10 +10,11 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.tanyixiu.scrumer.R;
-import com.tanyixiu.scrumer.datas.DataSaver;
+import com.tanyixiu.scrumer.datas.DataHelper;
 import com.tanyixiu.scrumer.models.User;
 import com.tanyixiu.scrumer.utils.CommonUtils;
 import com.tanyixiu.scrumer.utils.StringHelper;
+import com.tanyixiu.widgets.CircularProgressDialog;
 
 import java.util.UUID;
 
@@ -85,19 +86,23 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
         }
 
         User user = new User();
-        user.setUserId(UUID.randomUUID().toString());
+        user.setId(UUID.randomUUID().toString());
         user.setName(name);
         user.setPassword(StringHelper.toMD5(password));
         user.setRegisterTime(StringHelper.getCurrentTime());
-        DataSaver.saveRegisterUser(user, new DataSaver.CallBackListener() {
+
+        final CircularProgressDialog bar = CircularProgressDialog.show(RegisterActivity.this);
+        DataHelper.saveRegisterUser(user, new DataHelper.CallBackListener() {
             @Override
             public void onSuccess(String result) {
+                bar.dismiss();
                 CommonUtils.showToast("注册成功，请重新登录");
                 RegisterActivity.this.finish();
             }
 
             @Override
             public void onFailure(Exception ex) {
+                bar.dismiss();
                 CommonUtils.showToast(ex.getMessage());
             }
         });

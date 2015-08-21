@@ -2,18 +2,18 @@ package com.tanyixiu.scrumer.activities;
 
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
 import com.tanyixiu.scrumer.R;
-import com.tanyixiu.scrumer.datas.DataSaver;
+import com.tanyixiu.scrumer.datas.DataHelper;
+import com.tanyixiu.scrumer.http.VolleyHelper;
 import com.tanyixiu.scrumer.utils.CommonUtils;
 import com.tanyixiu.scrumer.utils.StringHelper;
 import com.tanyixiu.widgets.CircularProgressDialog;
-
-import fr.castorflex.android.circularprogressbar.CircularProgressBar;
 
 public class LoginActivity extends BaseActivity {
 
@@ -66,11 +66,11 @@ public class LoginActivity extends BaseActivity {
         final CircularProgressDialog bar = CircularProgressDialog.show(LoginActivity.this);
 
         String md5Pwd = StringHelper.toMD5(password);
-        DataSaver.getLoginUser(name, md5Pwd, new DataSaver.CallBackListener() {
+        DataHelper.getLoginUser(name, md5Pwd, new DataHelper.CallBackListener() {
             @Override
             public void onSuccess(String result) {
                 bar.dismiss();
-                ProjectActivity.startActivity(LoginActivity.this, "1");
+                TeamActivity.startActivity(LoginActivity.this);
                 finish();
             }
 

@@ -1,7 +1,6 @@
 package com.tanyixiu.scrumer.fragments;
 
 
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -95,7 +94,7 @@ public class StoryListFragment extends Fragment {
     private void requestData() {
         toggleLoading(true);
         String sql = SqlHelper.getStories(mProjectId, mStateId);
-        VolleyHelper.requestString(sql, new VolleyHelper.RequestListener<String>() {
+        VolleyHelper.requestServer(sql, new VolleyHelper.RequestListener<String>() {
             @Override
             public void onResponse(String s) {
                 toggleLoading(false);

@@ -1,5 +1,7 @@
 package com.tanyixiu.scrumer.models;
 
+import android.text.TextUtils;
+
 import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
@@ -10,8 +12,8 @@ import com.activeandroid.annotation.Table;
 @Table(name = "user", id = "tb_user_id")
 public class User extends Model {
 
-    @Column(name = "userid", notNull = true, unique = true, index = true)
-    private String userId;
+    @Column(name = "id", notNull = true, unique = true, index = true)
+    private String id;
 
     @Column(name = "name", notNull = true, unique = true, index = true)
     private String name;
@@ -35,15 +37,21 @@ public class User extends Model {
     public User() {
     }
 
-    public String getUserId() {
-        return userId;
+    public String getId() {
+        if (TextUtils.isEmpty(id)) {
+            return "";
+        }
+        return id;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getName() {
+        if (TextUtils.isEmpty(name)) {
+            return "";
+        }
         return name;
     }
 
@@ -52,6 +60,9 @@ public class User extends Model {
     }
 
     public String getPassword() {
+        if (TextUtils.isEmpty(password)) {
+            return "";
+        }
         return password;
     }
 
@@ -60,6 +71,9 @@ public class User extends Model {
     }
 
     public String getTel() {
+        if (TextUtils.isEmpty(tel)) {
+            return "";
+        }
         return tel;
     }
 
@@ -68,6 +82,9 @@ public class User extends Model {
     }
 
     public String getEmail() {
+        if (TextUtils.isEmpty(email)) {
+            return "";
+        }
         return email;
     }
 
@@ -76,6 +93,9 @@ public class User extends Model {
     }
 
     public String getRegisterTime() {
+        if (TextUtils.isEmpty(registerTime)) {
+            return "";
+        }
         return registerTime;
     }
 
@@ -84,10 +104,14 @@ public class User extends Model {
     }
 
     public String getPhotoUrl() {
+        if (TextUtils.isEmpty(photoUrl)) {
+            return "";
+        }
         return photoUrl;
     }
 
     public void setPhotoUrl(String photoUrl) {
+
         this.photoUrl = photoUrl;
     }
 }

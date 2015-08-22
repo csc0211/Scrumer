@@ -34,7 +34,7 @@ public class ProjectListViewAdapter extends BaseAdapter {
         this.mPullToRefreshView.setOnRefreshListener(mOnRefreshListener);
     }
 
-    public void AddItems(List<Project> projects) {
+    public void addItems(List<Project> projects) {
         if (null == projects || 0 == projects.size()) {
             return;
         }
@@ -42,6 +42,16 @@ public class ProjectListViewAdapter extends BaseAdapter {
             mProjects = new ArrayList<>();
         }
         mProjects.addAll(projects);
+    }
+
+    public void addItem(Project project) {
+        if (null == project) {
+            return;
+        }
+        if (null == mProjects) {
+            mProjects = new ArrayList<>();
+        }
+        mProjects.add(project);
     }
 
     private PullToRefreshView.OnRefreshListener mOnRefreshListener

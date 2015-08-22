@@ -99,6 +99,7 @@ public class TeamEditActivity extends BaseActivity {
         String param = SqlHelper.insertTeamSql(team) + ";" + SqlHelper.insertTeamUserSql(teamUser);
         String url = UrlHelper.initWriteUrl(param);
 
+        setLoading(true);
         executeRequest(new StringRequest(url, responseListener(team, teamUser), errorListener()));
     }
 
@@ -108,6 +109,7 @@ public class TeamEditActivity extends BaseActivity {
             public void onResponse(String s) {
                 team.save();
                 teamUser.save();
+                setLoading(false);
                 Intent data = new Intent();
                 data.putExtra("team", team);
                 setResult(RESULT_OK, data);
@@ -122,7 +124,7 @@ public class TeamEditActivity extends BaseActivity {
      *
      * @author ButterKnifeZelezny, plugin for Android Studio by Avast Developers (http://github.com/avast)
      */
-    static class ViewHolder {
+    protected static class ViewHolder {
         @InjectView(R.id.teamedit_img_back)
         ImageView mImgBack;
         @InjectView(R.id.teamedit_et_name)

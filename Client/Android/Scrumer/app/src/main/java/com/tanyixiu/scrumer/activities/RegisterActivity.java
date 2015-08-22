@@ -126,7 +126,7 @@ public class RegisterActivity extends BaseActivity {
      *
      * @author ButterKnifeZelezny, plugin for Android Studio by Avast Developers (http://github.com/avast)
      */
-    static class ViewHolder {
+    protected static class ViewHolder {
         @InjectView(R.id.register_et_name)
         EditText mEtName;
         @InjectView(R.id.register_et_password)

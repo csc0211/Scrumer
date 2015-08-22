@@ -39,6 +39,7 @@
     <string name="register_toast_confirm_notequal">两次密码不一致</string>
     <string name="register_toast_name_isexist">用户名\'%s\'已经存在</string>
     <string name="register_toast_success">注册成功，请重新登录</string>
-    <string name="team_toast_parseerror">数据解析错误</string>
+    <string name="toast_parseerror">数据解析错误</string>
     <string name="teamedit_toast_name_not_null">团队名称不能为空</string>
+    <string name="projectedit_toast_name_notnull">项目名称不能为空</string>
 </resources>

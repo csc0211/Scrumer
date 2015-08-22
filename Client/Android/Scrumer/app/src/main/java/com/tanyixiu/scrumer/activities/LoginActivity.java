@@ -119,7 +119,7 @@ public class LoginActivity extends BaseActivity {
      *
      * @author ButterKnifeZelezny, plugin for Android Studio by Avast Developers (http://github.com/avast)
      */
-    static class ViewHolder {
+    protected static class ViewHolder {
         @InjectView(R.id.login_et_username)
         LoginEditText mEtName;
         @InjectView(R.id.login_et_password)

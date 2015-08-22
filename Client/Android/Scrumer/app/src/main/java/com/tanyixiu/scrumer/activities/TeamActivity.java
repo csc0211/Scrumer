@@ -50,11 +50,12 @@ public class TeamActivity extends BaseActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (REQUEST_CODE == requestCode && RESULT_OK == resultCode) {
-            Team newTeam = data.getParcelableExtra("team");
-            mTeamListViewAdapter.addItem(newTeam);
-            mTeamListViewAdapter.notifyDataSetChanged();
+        if (REQUEST_CODE != requestCode || RESULT_OK != resultCode) {
+            return;
         }
+        Team newTeam = data.getParcelableExtra("team");
+        mTeamListViewAdapter.addItem(newTeam);
+        mTeamListViewAdapter.notifyDataSetChanged();
     }
 
     private void init(View rootView) {
@@ -99,7 +100,7 @@ public class TeamActivity extends BaseActivity {
                     mTeamListViewAdapter.addItems(teams);
                     mTeamListViewAdapter.notifyDataSetChanged();
                 } catch (Exception ex) {
-                    ToastUtil.showLong(R.string.team_toast_parseerror);
+                    ToastUtil.showLong(R.string.toast_parseerror);
                 }
             }
         };
@@ -111,7 +112,7 @@ public class TeamActivity extends BaseActivity {
      *
      * @author ButterKnifeZelezny, plugin for Android Studio by Avast Developers (http://github.com/avast)
      */
-    static class ViewHolder {
+    protected static class ViewHolder {
         @InjectView(R.id.team_img_addteam)
         ImageView mImgAddTeam;
         @InjectView(R.id.team_listview)

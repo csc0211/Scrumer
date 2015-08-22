@@ -16,7 +16,7 @@ import android.widget.TextView;
 
 import com.android.volley.VolleyError;
 import com.tanyixiu.scrumer.R;
-import com.tanyixiu.scrumer.entities.Project;
+import com.tanyixiu.scrumer.models.Project;
 import com.tanyixiu.scrumer.entities.State;
 import com.tanyixiu.scrumer.fragments.StoryListFragment;
 import com.tanyixiu.scrumer.http.SqlHelper;

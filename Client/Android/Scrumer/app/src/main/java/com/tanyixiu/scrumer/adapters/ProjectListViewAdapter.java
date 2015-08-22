@@ -8,7 +8,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.tanyixiu.scrumer.R;
-import com.tanyixiu.scrumer.entities.Project;
+import com.tanyixiu.scrumer.models.Project;
 import com.tanyixiu.widgets.CircleImageView;
 import com.yalantis.phoenix.PullToRefreshView;
 

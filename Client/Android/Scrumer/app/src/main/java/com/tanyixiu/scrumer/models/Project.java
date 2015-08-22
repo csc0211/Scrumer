@@ -1,19 +1,40 @@
-package com.tanyixiu.scrumer.entities;
+package com.tanyixiu.scrumer.models;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.text.TextUtils;
+
+import com.activeandroid.Model;
+import com.activeandroid.annotation.Column;
+import com.activeandroid.annotation.Table;
 
 /**
  * Created by Mimo on 2015/8/16.
  */
-public class Project implements Parcelable {
+@Table(name = "project", id = "tb_project_id")
+public class Project extends Model implements Parcelable {
+    @Column(name = "id", notNull = true, unique = true, index = true)
     private String id;
+
+    @Column(name = "teamid", notNull = true)
     private String teamId;
+
+    @Column(name = "name", notNull = true)
     private String name;
+
+    @Column(name = "description")
     private String description;
+
+    @Column(name = "creatorid")
     private String creatorId;
+
+    @Column(name = "createtime")
     private String createTime;
+
+    @Column(name = "state")
     private int state;
+
+    @Column(name = "sectionid")
     private String sectionId;
 
     public Project() {
@@ -21,6 +42,9 @@ public class Project implements Parcelable {
     }
 
     public String getId() {
+        if (TextUtils.isEmpty(id)) {
+            return "";
+        }
         return id;
     }
 
@@ -29,6 +53,9 @@ public class Project implements Parcelable {
     }
 
     public String getTeamId() {
+        if (TextUtils.isEmpty(teamId)) {
+            return "";
+        }
         return teamId;
     }
 
@@ -37,6 +64,9 @@ public class Project implements Parcelable {
     }
 
     public String getName() {
+        if (TextUtils.isEmpty(name)) {
+            return "";
+        }
         return name;
     }
 
@@ -45,6 +75,9 @@ public class Project implements Parcelable {
     }
 
     public String getDescription() {
+        if (TextUtils.isEmpty(description)) {
+            return "";
+        }
         return description;
     }
 
@@ -53,6 +86,9 @@ public class Project implements Parcelable {
     }
 
     public String getCreatorId() {
+        if (TextUtils.isEmpty(creatorId)) {
+            return "";
+        }
         return creatorId;
     }
 
@@ -61,6 +97,9 @@ public class Project implements Parcelable {
     }
 
     public String getCreateTime() {
+        if (TextUtils.isEmpty(createTime)) {
+            return "";
+        }
         return createTime;
     }
 
@@ -78,6 +117,9 @@ public class Project implements Parcelable {
 
 
     public String getSectionId() {
+        if (TextUtils.isEmpty(sectionId)) {
+            return "";
+        }
         return sectionId;
     }
 

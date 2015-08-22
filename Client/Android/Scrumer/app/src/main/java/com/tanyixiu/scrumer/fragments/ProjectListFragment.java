@@ -16,7 +16,7 @@ import com.tanyixiu.scrumer.activities.ProjectActivity;
 import com.tanyixiu.scrumer.activities.ProjectEditActivity;
 import com.tanyixiu.scrumer.activities.StoryActivity;
 import com.tanyixiu.scrumer.adapters.ProjectListViewAdapter;
-import com.tanyixiu.scrumer.entities.Project;
+import com.tanyixiu.scrumer.models.Project;
 import com.tanyixiu.scrumer.http.SqlHelper;
 import com.tanyixiu.scrumer.http.VolleyHelper;
 import com.tanyixiu.scrumer.util.CommonUtils;

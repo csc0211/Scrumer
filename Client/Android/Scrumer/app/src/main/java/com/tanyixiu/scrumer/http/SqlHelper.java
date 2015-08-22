@@ -1,8 +1,10 @@
 package com.tanyixiu.scrumer.http;
 
+import com.tanyixiu.scrumer.models.Project;
 import com.tanyixiu.scrumer.models.Team;
 import com.tanyixiu.scrumer.models.TeamUser;
 import com.tanyixiu.scrumer.models.User;
+import com.tanyixiu.scrumer.util.StringHelper;
 
 /**
  * Created by Mimo on 2015/8/17.
@@ -62,5 +64,13 @@ public class SqlHelper {
     public static String insertTeamUserSql(TeamUser teamUser) {
         String sql = "insert into team_user (id, teamid, userid, jointime)values('%s', '%s', '%s', '%s')";
         return String.format(sql, teamUser.getId(), teamUser.getTeamId(), teamUser.getUserId(), teamUser.getJoinTime());
+    }
+
+    public static String insertProjectSql(Project project) {
+        String sql = "insert into project (id, teamid, name, description, creatorid, createtime, state, sectionid) values ('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s')";
+        return String.format(sql, project.getId(), project.getTeamId(),
+                project.getName(), project.getDescription(),
+                project.getCreatorId(), project.getCreateTime(),
+                project.getState(), project.getSectionId());
     }
 }

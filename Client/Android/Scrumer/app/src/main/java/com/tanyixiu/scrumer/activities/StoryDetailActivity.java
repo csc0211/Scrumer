@@ -17,8 +17,8 @@ import com.tanyixiu.scrumer.entities.StoryDetail_X;
 import com.tanyixiu.scrumer.entities.StoryUser;
 import com.tanyixiu.scrumer.http.SqlHelper;
 import com.tanyixiu.scrumer.http.VolleyHelper;
-import com.tanyixiu.scrumer.utils.CommonUtils;
-import com.tanyixiu.scrumer.utils.JsonHelper;
+import com.tanyixiu.scrumer.util.CommonUtils;
+import com.tanyixiu.scrumer.util.JsonHelper;
 
 import java.util.List;
 

@@ -6,29 +6,36 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
 import com.tanyixiu.scrumer.App;
 import com.tanyixiu.scrumer.R;
+import com.tanyixiu.scrumer.data.UrlHelper;
 import com.tanyixiu.scrumer.http.SqlHelper;
 import com.tanyixiu.scrumer.http.VolleyHelper;
 import com.tanyixiu.scrumer.models.Team;
 import com.tanyixiu.scrumer.models.TeamUser;
-import com.tanyixiu.scrumer.utils.CommonUtils;
-import com.tanyixiu.scrumer.utils.StringHelper;
-import com.tanyixiu.widgets.CircularProgressDialog;
-
-import org.w3c.dom.Text;
+import com.tanyixiu.scrumer.util.CommonUtils;
+import com.tanyixiu.scrumer.util.StringHelper;
+import com.tanyixiu.scrumer.util.ToastUtil;
+import com.tanyixiu.widgets.LoadingDialog;
 
 import java.util.UUID;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+
 public class TeamEditActivity extends BaseActivity {
 
-    private TextView mTvName;
-    private TextView mTvDescription;
+    private ViewHolder mHolder;
 
-    public static void startActivty(Activity activity, int requestCode) {
+    public static void startActivityForResult(Activity activity, int requestCode) {
         Intent intent = new Intent(activity, TeamEditActivity.class);
         activity.startActivityForResult(intent, requestCode);
     }
@@ -38,55 +45,67 @@ public class TeamEditActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         View rootView = LayoutInflater.from(this).inflate(R.layout.activity_team_edit, null);
         setContentView(rootView);
-
-        initView(rootView);
+        init(rootView);
     }
 
-    private void initView(View rootView) {
-        mTvName = (TextView) rootView.findViewById(R.id.teamedit_ed_name);
-        mTvDescription = (TextView) rootView.findViewById(R.id.teamedit_ed_descirption);
+    private void init(View rootView) {
+        mHolder = new ViewHolder(rootView);
+
+        mHolder.mImgBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+        mHolder.mBtnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+        mHolder.mBtnSave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                doSaveClick();
+            }
+        });
     }
 
-    public void doSaveClick(View view) {
-
-        String name = String.valueOf(mTvName.getText());
-        String description = String.valueOf(mTvDescription.getText());
+    private void doSaveClick() {
+        String name = String.valueOf(mHolder.mEtName.getText());
+        String description = String.valueOf(mHolder.mEtDescription.getText());
         if (TextUtils.isEmpty(name)) {
-            CommonUtils.showToast("团队名称不能为空");
+            ToastUtil.showLong(R.string.teamedit_toast_name_not_null);
             return;
         }
-
         saveTeam(name, description);
-
-    }
-
-    public void doCanceClick(View view) {
-        this.finish();
     }
 
     private void saveTeam(String name, String description) {
-
-        final CircularProgressDialog dialog = CircularProgressDialog.show(TeamEditActivity.this);
-
-        final Team team = new Team();
-        String teamid = String.valueOf(UUID.randomUUID());
-        team.setId(teamid);
+        Team team = new Team();
+        String teamId = String.valueOf(UUID.randomUUID());
+        team.setId(teamId);
         team.setName(name);
         team.setDescription(description);
         team.setCreatorId(App.getLoginUser().getId());
         team.setCreateTime(StringHelper.getCurrentTime());
 
-        final TeamUser teamUser = new TeamUser();
+        TeamUser teamUser = new TeamUser();
         teamUser.setId(String.valueOf(UUID.randomUUID()));
-        teamUser.setTeamId(teamid);
+        teamUser.setTeamId(teamId);
         teamUser.setUserId(App.getLoginUser().getId());
         teamUser.setJoinTime(StringHelper.getCurrentTime());
 
-        String sql = SqlHelper.insertTeamSql(team) + ";" + SqlHelper.insertTeamUserSql(teamUser);
-        VolleyHelper.requestServer(sql, new VolleyHelper.RequestListener() {
+        String param = SqlHelper.insertTeamSql(team) + ";" + SqlHelper.insertTeamUserSql(teamUser);
+        String url = UrlHelper.initWriteUrl(param);
+
+        executeRequest(new StringRequest(url, responseListener(team, teamUser), errorListener()));
+    }
+
+    private Response.Listener<String> responseListener(final Team team, final TeamUser teamUser) {
+        return new Response.Listener<String>() {
             @Override
-            public void onResponse(Object o) {
-                dialog.dismiss();
+            public void onResponse(String s) {
                 team.save();
                 teamUser.save();
                 Intent data = new Intent();
@@ -94,12 +113,29 @@ public class TeamEditActivity extends BaseActivity {
                 setResult(RESULT_OK, data);
                 finish();
             }
+        };
+    }
 
-            @Override
-            public void onErrorResponse(VolleyError volleyError) {
-                dialog.dismiss();
-                CommonUtils.showToast("保存失败");
-            }
-        });
+    /**
+     * This class contains all butterknife-injected Views & Layouts from layout file 'activity_team_edit.xml'
+     * for easy to all layout elements.
+     *
+     * @author ButterKnifeZelezny, plugin for Android Studio by Avast Developers (http://github.com/avast)
+     */
+    static class ViewHolder {
+        @InjectView(R.id.teamedit_img_back)
+        ImageView mImgBack;
+        @InjectView(R.id.teamedit_et_name)
+        EditText mEtName;
+        @InjectView(R.id.teamedit_et_descirption)
+        EditText mEtDescription;
+        @InjectView(R.id.teamedit_btn_cancel)
+        Button mBtnCancel;
+        @InjectView(R.id.teamedit_btn_save)
+        Button mBtnSave;
+
+        ViewHolder(View view) {
+            ButterKnife.inject(this, view);
+        }
     }
 }

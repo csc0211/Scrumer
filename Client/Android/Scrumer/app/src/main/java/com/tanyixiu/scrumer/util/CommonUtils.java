@@ -1,4 +1,4 @@
-package com.tanyixiu.scrumer.utils;
+package com.tanyixiu.scrumer.util;
 
 import android.widget.Toast;
 

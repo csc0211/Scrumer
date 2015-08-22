@@ -6,6 +6,8 @@ import android.content.Context;
 import com.activeandroid.ActiveAndroid;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
+import com.squareup.leakcanary.LeakCanary;
+import com.squareup.leakcanary.RefWatcher;
 import com.tanyixiu.scrumer.models.User;
 
 /**
@@ -14,15 +16,21 @@ import com.tanyixiu.scrumer.models.User;
 public class App extends Application {
 
     private static Context sContext;
-    private static User sMLoginUser;
+    private static User sLoginUser;
     private static RequestQueue sRequestQueue;
+    private static RefWatcher sRefWatcher;
 
     @Override
     public void onCreate() {
         super.onCreate();
         sContext = getApplicationContext();
         ActiveAndroid.initialize(sContext);
+        sRefWatcher = LeakCanary.install(this);
         sRequestQueue = Volley.newRequestQueue(sContext);
+    }
+
+    public static RefWatcher getRefWatcher() {
+        return sRefWatcher;
     }
 
     public static Context getContext() {
@@ -30,11 +38,11 @@ public class App extends Application {
     }
 
     public static User getLoginUser() {
-        return sMLoginUser;
+        return sLoginUser;
     }
 
     public static void setLoginUser(User mLoginUser) {
-        App.sMLoginUser = mLoginUser;
+        App.sLoginUser = mLoginUser;
     }
 
     public static RequestQueue getRequestQueue() {

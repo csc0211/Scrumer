@@ -40,7 +40,7 @@
             android:padding="@dimen/activity_horizontal_margin">
 
             <com.tanyixiu.widgets.LoginEditText
-                android:id="@+id/login_ed_username"
+                android:id="@+id/login_et_username"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@null"
@@ -48,7 +48,7 @@
                 android:drawableStart="@drawable/login_user_hightlighted"
                 android:hint="@string/login_hint_username"
                 android:singleLine="true"
-                android:text="Mimo"
+                android:text="tanyixiu"
                 android:textCursorDrawable="@null"/>
 
             <View
@@ -59,7 +59,7 @@
                 android:background="@color/bkg_color_black_tranlucent"/>
 
             <com.tanyixiu.widgets.LoginEditText
-                android:id="@+id/login_ed_password"
+                android:id="@+id/login_et_password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@null"

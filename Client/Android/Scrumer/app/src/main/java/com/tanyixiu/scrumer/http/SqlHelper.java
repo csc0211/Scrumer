@@ -8,10 +8,10 @@ import com.tanyixiu.scrumer.models.User;
  * Created by Mimo on 2015/8/17.
  */
 public class SqlHelper {
-    public static String getLoginUser(String name, String password) {
+    public static String getLoginUser(String name, String md5Password) {
 
         String sql = "select * from user where name= '%s' and password='%s'";
-        return String.format(sql, name, password);
+        return String.format(sql, name, md5Password);
     }
 
     public static String getProjects(String teamId) {

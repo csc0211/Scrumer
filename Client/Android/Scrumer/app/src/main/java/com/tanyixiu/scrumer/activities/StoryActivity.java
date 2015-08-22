@@ -21,8 +21,8 @@ import com.tanyixiu.scrumer.entities.State;
 import com.tanyixiu.scrumer.fragments.StoryListFragment;
 import com.tanyixiu.scrumer.http.SqlHelper;
 import com.tanyixiu.scrumer.http.VolleyHelper;
-import com.tanyixiu.scrumer.utils.CommonUtils;
-import com.tanyixiu.scrumer.utils.JsonHelper;
+import com.tanyixiu.scrumer.util.CommonUtils;
+import com.tanyixiu.scrumer.util.JsonHelper;
 
 import java.util.HashMap;
 import java.util.List;

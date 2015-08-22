@@ -1,34 +1,36 @@
 package com.tanyixiu.scrumer.activities;
 
-import android.content.Context;
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
+import android.widget.EditText;
 
+import com.android.volley.Response;
+import com.android.volley.toolbox.StringRequest;
 import com.tanyixiu.scrumer.R;
-import com.tanyixiu.scrumer.datas.DataHelper;
+import com.tanyixiu.scrumer.dao.UserHelper;
+import com.tanyixiu.scrumer.data.UrlHelper;
+import com.tanyixiu.scrumer.http.SqlHelper;
 import com.tanyixiu.scrumer.models.User;
-import com.tanyixiu.scrumer.utils.CommonUtils;
-import com.tanyixiu.scrumer.utils.StringHelper;
-import com.tanyixiu.widgets.CircularProgressDialog;
+import com.tanyixiu.scrumer.util.StringHelper;
+import com.tanyixiu.scrumer.util.ToastUtil;
 
 import java.util.UUID;
 
-public class RegisterActivity extends BaseActivity implements View.OnClickListener {
+import butterknife.ButterKnife;
+import butterknife.InjectView;
 
-    private TextView tvName;
-    private TextView tvPassword;
-    private TextView tvConfirmPwssword;
-    private Button btnCancel;
-    private Button btnOk;
+public class RegisterActivity extends BaseActivity {
 
-    public static void startActivity(Context context) {
-        Intent intent = new Intent(context, RegisterActivity.class);
-        context.startActivity(intent);
+    private ViewHolder mHolder;
+
+    public static void startActivityForResult(Activity activity, int requestCode) {
+        Intent intent = new Intent(activity, RegisterActivity.class);
+        activity.startActivityForResult(intent, requestCode);
     }
 
     @Override
@@ -36,79 +38,108 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
         super.onCreate(savedInstanceState);
         View rootView = LayoutInflater.from(this).inflate(R.layout.activity_register, null);
         setContentView(rootView);
-        initView(rootView);
-        initViewEvent();
+        init(rootView);
     }
 
-    private void initView(View rootView) {
-        tvName = (TextView) rootView.findViewById(R.id.register_et_name);
-        tvPassword = (TextView) rootView.findViewById(R.id.register_et_password);
-        tvConfirmPwssword = (TextView) rootView.findViewById(R.id.register_et_confirmpassword);
-        btnCancel = (Button) rootView.findViewById(R.id.register_btn_cancel);
-        btnOk = (Button) rootView.findViewById(R.id.register_btn_ok);
-    }
+    private void init(View rootView) {
+        mHolder = new ViewHolder(rootView);
+        mHolder.mEtName = (EditText) rootView.findViewById(R.id.register_et_name);
+        mHolder.mEtPassword = (EditText) rootView.findViewById(R.id.register_et_password);
+        mHolder.mEtConfirm = (EditText) rootView.findViewById(R.id.register_et_confirmpassword);
+        mHolder.mBtnCancel = (Button) rootView.findViewById(R.id.register_btn_cancel);
+        mHolder.mBtnRegister = (Button) rootView.findViewById(R.id.register_btn_ok);
 
-    private void initViewEvent() {
-        btnOk.setOnClickListener(this);
-        btnCancel.setOnClickListener(this);
-    }
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.register_btn_cancel:
-                btnCancelClick();
-                break;
-            case R.id.register_btn_ok:
+        mHolder.mBtnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                RegisterActivity.this.finish();
+            }
+        });
+        mHolder.mBtnRegister.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
                 btnOkClick();
-                break;
-            default:
-                break;
-        }
+            }
+        });
     }
 
     private void btnOkClick() {
-        String name = String.valueOf(tvName.getText());
-        String password = String.valueOf(tvPassword.getText());
-        String confirmPassword = String.valueOf(tvConfirmPwssword.getText());
+        String name = String.valueOf(mHolder.mEtName.getText());
+        String password = String.valueOf(mHolder.mEtPassword.getText());
+        String confirmPassword = String.valueOf(mHolder.mEtConfirm.getText());
         if (TextUtils.isEmpty(name)) {
-            CommonUtils.showToast("用户名不能为空");
+            ToastUtil.showLong(R.string.register_toast_name_notnull);
             return;
         }
         if (TextUtils.isEmpty(password)) {
-            CommonUtils.showToast("密码不能为空");
+            ToastUtil.showLong(R.string.register_toast_password_notnull);
             return;
         }
 
         if (!password.equals(confirmPassword)) {
-            CommonUtils.showToast("两次密码不一致");
+            ToastUtil.showLong(R.string.register_toast_confirm_notequal);
             return;
         }
 
+        User existUser = UserHelper.isExistName(name);
+        if (null != existUser) {
+            ToastUtil.showLong(getString(R.string.register_toast_name_isexist, name));
+            return;
+        }
+
+        saveUser(name, password);
+    }
+
+    private void saveUser(String name, String password) {
         User user = new User();
         user.setId(UUID.randomUUID().toString());
         user.setName(name);
         user.setPassword(StringHelper.toMD5(password));
         user.setRegisterTime(StringHelper.getCurrentTime());
 
-        final CircularProgressDialog bar = CircularProgressDialog.show(RegisterActivity.this);
-        DataHelper.saveRegisterUser(user, new DataHelper.CallBackListener() {
-            @Override
-            public void onSuccess(String result) {
-                bar.dismiss();
-                CommonUtils.showToast("注册成功，请重新登录");
-                RegisterActivity.this.finish();
-            }
-
-            @Override
-            public void onFailure(Exception ex) {
-                bar.dismiss();
-                CommonUtils.showToast(ex.getMessage());
-            }
-        });
+        setLoading(true);
+        String param = SqlHelper.insertUserSql(user);
+        String url = UrlHelper.initWriteUrl(param);
+        executeRequest(new StringRequest(url, responseListener(user), errorListener()));
     }
 
-    private void btnCancelClick() {
-        this.finish();
+    private Response.Listener<String> responseListener(final User user) {
+        return new Response.Listener<String>() {
+            @Override
+            public void onResponse(String s) {
+                user.save();
+                setLoading(false);
+                ToastUtil.showLong(R.string.register_toast_success);
+
+                Intent data = new Intent();
+                data.putExtra("name", user.getName());
+                setResult(RESULT_OK, data);
+                finish();
+            }
+        };
+    }
+
+
+    /**
+     * This class contains all butterknife-injected Views & Layouts from layout file 'activity_register.xml'
+     * for easy to all layout elements.
+     *
+     * @author ButterKnifeZelezny, plugin for Android Studio by Avast Developers (http://github.com/avast)
+     */
+    static class ViewHolder {
+        @InjectView(R.id.register_et_name)
+        EditText mEtName;
+        @InjectView(R.id.register_et_password)
+        EditText mEtPassword;
+        @InjectView(R.id.register_et_confirmpassword)
+        EditText mEtConfirm;
+        @InjectView(R.id.register_btn_cancel)
+        Button mBtnCancel;
+        @InjectView(R.id.register_btn_ok)
+        Button mBtnRegister;
+
+        ViewHolder(View view) {
+            ButterKnife.inject(this, view);
+        }
     }
 }

@@ -1,7 +1,6 @@
-package com.tanyixiu.scrumer.utils;
+package com.tanyixiu.scrumer.util;
 
 import com.tanyixiu.scrumer.R;
-import com.tanyixiu.scrumer.entities.Story;
 import com.tanyixiu.scrumer.entities.enums;
 
 /**

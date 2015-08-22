@@ -1,56 +1,77 @@
 package com.tanyixiu.scrumer.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 
+import com.android.volley.Response;
+import com.android.volley.toolbox.StringRequest;
+import com.tanyixiu.scrumer.App;
 import com.tanyixiu.scrumer.R;
-import com.tanyixiu.scrumer.datas.DataHelper;
-import com.tanyixiu.scrumer.http.VolleyHelper;
-import com.tanyixiu.scrumer.utils.CommonUtils;
-import com.tanyixiu.scrumer.utils.StringHelper;
-import com.tanyixiu.widgets.CircularProgressDialog;
+import com.tanyixiu.scrumer.data.UrlHelper;
+import com.tanyixiu.scrumer.http.SqlHelper;
+import com.tanyixiu.scrumer.models.User;
+import com.tanyixiu.scrumer.util.CommonUtils;
+import com.tanyixiu.scrumer.util.JsonHelper;
+import com.tanyixiu.scrumer.util.StringHelper;
+import com.tanyixiu.scrumer.util.ToastUtil;
+import com.tanyixiu.widgets.LoginEditText;
+
+import butterknife.ButterKnife;
+import butterknife.InjectView;
 
 public class LoginActivity extends BaseActivity {
 
-    private Button btnOk;
-    private Button btnRegister;
-    private EditText edUsername;
-    private EditText edPassword;
+    private static final int REQUEST_CODE = 0;
+    private ViewHolder mHolder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         View rootView = LayoutInflater.from(this).inflate(R.layout.activity_login, null);
         setContentView(rootView);
-        initView(rootView);
-        initViewEvent();
+        init(rootView);
     }
 
-    private void initView(View rootView) {
-        this.btnOk = (Button) rootView.findViewById(R.id.login_btn_ok);
-        this.btnRegister = (Button) rootView.findViewById(R.id.login_btn_register);
-        this.edUsername = (EditText) rootView.findViewById(R.id.login_ed_username);
-        this.edPassword = (EditText) rootView.findViewById(R.id.login_ed_password);
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (REQUEST_CODE != requestCode || RESULT_OK != resultCode) {
+            return;
+        }
+        String name = data.getStringExtra("name");
+        mHolder.mEtName.setText(name);
+        mHolder.mEtPassword.setText("");
     }
 
-    private void initViewEvent() {
-        this.btnOk.setOnClickListener(mOnClickListener);
-        this.btnRegister.setOnClickListener(mOnClickListener);
+    private void init(View rootView) {
+        mHolder = new ViewHolder(rootView);
+
+        mHolder.mBtnOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                btnLoginClick();
+            }
+        });
+
+        mHolder.mBtnRegister.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                RegisterActivity.startActivityForResult(LoginActivity.this, REQUEST_CODE);
+            }
+        });
     }
 
     private void btnLoginClick() {
-        String name = edUsername.getText().toString();
-        String password = edPassword.getText().toString();
+        String name = mHolder.mEtName.getText().toString();
+        String password = mHolder.mEtPassword.getText().toString();
         if (TextUtils.isEmpty(name)) {
             CommonUtils.showToast(R.string.login_toast_emptyname);
             return;
         }
-
         if (TextUtils.isEmpty(password)) {
             CommonUtils.showToast(R.string.login_toast_emptypassword);
             return;
@@ -58,44 +79,58 @@ public class LoginActivity extends BaseActivity {
         requestLogin(name, password);
     }
 
-    private void btnRegisterClick() {
-        RegisterActivity.startActivity(LoginActivity.this);
-    }
-
     private void requestLogin(String name, String password) {
-        final CircularProgressDialog bar = CircularProgressDialog.show(LoginActivity.this);
+        setLoading(true);
 
         String md5Pwd = StringHelper.toMD5(password);
-        DataHelper.getLoginUser(name, md5Pwd, new DataHelper.CallBackListener() {
-            @Override
-            public void onSuccess(String result) {
-                bar.dismiss();
-                TeamActivity.startActivity(LoginActivity.this);
-                finish();
-            }
-
-            @Override
-            public void onFailure(Exception ex) {
-                CommonUtils.showToast(ex.getMessage());
-                bar.dismiss();
-            }
-        });
-
+        String param = SqlHelper.getLoginUser(name, md5Pwd);
+        String url = UrlHelper.initReadUrl(param);
+        executeRequest(new StringRequest(url, responseListener(), errorListener()));
     }
 
-    private View.OnClickListener mOnClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            switch (v.getId()) {
-                case R.id.login_btn_ok:
-                    btnLoginClick();
-                    break;
-                case R.id.login_btn_register:
-                    btnRegisterClick();
-                    break;
-                default:
-                    break;
+    private Response.Listener<String> responseListener() {
+        return new Response.Listener<String>() {
+            @Override
+            public void onResponse(String s) {
+                setLoading(false);
+                User user;
+                try {
+                    user = JsonHelper.toEntity(s, User.class);
+                    if (null == user) {
+                        ToastUtil.showLong(R.string.login_toast_login_error);
+                        return;
+                    }
+                    user.save();
+                    App.setLoginUser(user);
+                    TeamActivity.startActivity(LoginActivity.this);
+                    finish();
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                    ToastUtil.showLong(ex.getMessage());
+                }
             }
+        };
+    }
+
+
+    /**
+     * This class contains all butterknife-injected Views & Layouts from layout file 'activity_login.xml'
+     * for easy to all layout elements.
+     *
+     * @author ButterKnifeZelezny, plugin for Android Studio by Avast Developers (http://github.com/avast)
+     */
+    static class ViewHolder {
+        @InjectView(R.id.login_et_username)
+        LoginEditText mEtName;
+        @InjectView(R.id.login_et_password)
+        LoginEditText mEtPassword;
+        @InjectView(R.id.login_btn_ok)
+        Button mBtnOk;
+        @InjectView(R.id.login_btn_register)
+        Button mBtnRegister;
+
+        ViewHolder(View view) {
+            ButterKnife.inject(this, view);
         }
-    };
+    }
 }

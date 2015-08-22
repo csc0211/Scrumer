@@ -9,7 +9,7 @@ import android.widget.TextView;
 
 import com.tanyixiu.scrumer.R;
 import com.tanyixiu.scrumer.entities.Story;
-import com.tanyixiu.scrumer.utils.ColorUtils;
+import com.tanyixiu.scrumer.util.ColorUtils;
 import com.tanyixiu.widgets.CircleImageView;
 import com.yalantis.phoenix.PullToRefreshView;
 
